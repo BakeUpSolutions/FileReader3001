@@ -70,39 +70,49 @@ public class dirManpulator {
 					// Extract data from the new file
 					if(newFile.toString().endsWith(".csv")) {
 						System.out.println("Extraction in Progress...");
-						
-						//PArse the new CSV file
+						try {
+						//Parse the new CSV file
 						File csvData = new File(dir + "/" + newFile);
+							if(!csvData.exists()) {
+								System.out.println("File not Found");
+								return;
+							}
+							if(!csvData.getName().endsWith(".csv")) {
+								System.out.println("File not csv");
+								return;
+							}
+							if(csvData.length()==0) {
+								System.out.println("File empty");
+								return;
+							}
+			
 						Reader in = new FileReader(csvData);
 						Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(in);
 						
 						for (CSVRecord csvRecord : records) {
 							
 							// Accessing Values by column index
-							String iso_code = csvRecord.get(0);	
-							String continent = csvRecord.get(1);		
-							String location	 = csvRecord.get(2);	
-							String date	= csvRecord.get(3);	
-							String population	= csvRecord.get(4);	
-							String total_cases	= csvRecord.get(5);	
-							String new_cases	= csvRecord.get(6);	
-							String total_deaths = csvRecord.get(7);		
-							String new_deaths	= csvRecord.get(8);	
+							String FirstName = csvRecord.get(0);
+							if(FirstName == null || FirstName.isEmpty()) {
+								FirstName = null;
+							}
+							String LastName = csvRecord.get(1);	
+							if(LastName == null || LastName.isEmpty()) {
+								LastName = null;
+							}
+							String Age	 = csvRecord.get(2);
+							if(Age == null || Age.isEmpty()) {
+								Age = null;
+							}
 							
-							System.out.println("iso code : " + iso_code);
-							System.out.println("continent : " + continent);
-							System.out.println("location : " + location);
-							System.out.println("date : " + date);
-							System.out.println("population : " + population);
-							System.out.println("total_cases : " + total_cases);
-							System.out.println("new_cases : " + new_cases);
-							System.out.println("total_deaths : " + total_deaths);
-							System.out.println("new_deaths : " + new_deaths);
-						
-							
-
+							//Reformat Print statement to use printf
+							System.out.println("FirstName : " + FirstName);
+							System.out.println("LastName : " + LastName);
+							System.out.println("Age : " + Age);
 							} 
 						in.close();	
+						} catch (IOException e) {
+							System.out.println("An error occured while parsing the CSV file: " + e.getMessage());
 						}
 					}
 			key.reset();
@@ -110,5 +120,6 @@ public class dirManpulator {
 			
 		}
 		
+	}
 	}
 }
